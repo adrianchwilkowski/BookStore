@@ -1,5 +1,9 @@
 # BookStoreApi
 
+## About Project
+
+This project was created a long time ago, and its purpose was to showcase my knowledge at the time.
+
 ## Description
 
 BookStoreApi is a .NET Web API consisting of three projects:
