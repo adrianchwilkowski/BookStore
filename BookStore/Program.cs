@@ -1,3 +1,4 @@
+using BookStore;
 using BookStore.Helper;
 using BookStore.Services;
 using Infrastructure;
@@ -118,7 +119,8 @@ builder.Services.AddTransient<IOrdersService, OrdersService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.UseMiddleware<ExceptionsHandlingMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
