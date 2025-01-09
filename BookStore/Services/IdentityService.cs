@@ -41,7 +41,7 @@ namespace BookStore.Services
                     return await GenerateTokenString(user, _config);
                 }
             }
-            throw new NotFoundException("Account with given login doesn't exist.");
+            throw new AccessViolationException("Account with given login doesn't exist.");
         }
         public async Task<IdentityResult> Register(RegisterUser registration)
         {

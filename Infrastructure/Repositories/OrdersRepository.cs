@@ -1,13 +1,6 @@
 ﻿using Infrastructure.Entities;
-using Infrastructure.Exceptions;
 using Infrastructure.Migrations;
-using Infrastructure.Models.Commands;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
@@ -28,26 +21,12 @@ namespace Infrastructure.Repositories
         {
             Context.Orders
                 .Add(order);
-            try
-            {
-                await Context.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw new AlreadyExistsException("Order with given ID already exists.");
-            }
+            await Context.SaveChangesAsync();
         }
         public async Task ChangeCost(Order order, double amountToAdd)
         {
-            try
-            {
-                order.ChangeCost(amountToAdd);
-                await Context.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw new NotFoundException("Order with given id doesn't exist.");
-            }
+            order.ChangeCost(amountToAdd);
+            await Context.SaveChangesAsync();
         }
         public async Task<List<Order>> GetAllOrders()
         {

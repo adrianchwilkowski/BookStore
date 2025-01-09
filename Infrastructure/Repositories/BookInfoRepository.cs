@@ -43,14 +43,7 @@ namespace Infrastructure.Repositories
             Context.Attach(bookInfo.Book);
             Context.BookInfo
                 .Add(bookInfo);
-            try
-            {
-                await Context.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw new AlreadyExistsException("Bookinfo with given ID already exists.");
-            }
+            await Context.SaveChangesAsync();
         }
     }
 }

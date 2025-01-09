@@ -32,7 +32,5 @@ namespace Tests.Integration
             }
             return response;
         }
-
-            
     }
 }

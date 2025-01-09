@@ -9,14 +9,15 @@ namespace BookStore.Controllers
     public class IdentityController : Controller
     {
         private readonly IIdentityService _identityService;
-        public IdentityController(IIdentityService identityService) {
+        public IdentityController(IIdentityService identityService)
+        {
             _identityService = identityService;
         }
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody]RegisterUser register)
+        public async Task<IActionResult> Register([FromBody] RegisterUser register)
         {
             var result = await _identityService.Register(register);
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
                 return Ok();
             }
@@ -26,14 +27,8 @@ namespace BookStore.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<string>> Login([FromBody] LoginUser login)
         {
-            try
-            {
-                var result = await _identityService.Login(login);
-                return result;
-            }
-            catch(Exception ex ) {
-                return BadRequest(ex); 
-            }
+            var result = await _identityService.Login(login);
+            return result;
         }
     }
 }

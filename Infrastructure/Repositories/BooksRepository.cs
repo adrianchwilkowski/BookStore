@@ -20,7 +20,7 @@ namespace Infrastructure.Repositories
     public class BooksRepository : IBooksRepository
     {
         public ApplicationDbContext Context { get; set; }
-        public BooksRepository(ApplicationDbContext context) {  Context = context; }
+        public BooksRepository(ApplicationDbContext context) { Context = context; }
 
         public async Task<List<Book>> GetBooks()
         {
@@ -30,35 +30,21 @@ namespace Infrastructure.Repositories
         }
         public async Task<Book> GetById(Guid id)
         {
-            try
-            {
-                return await Context.Books
-                .Where(x => x.Id == id)
-                .FirstAsync();
-            }
-            catch (Exception) { throw new NotFoundException("Book with given ID doesn't exist."); }
+            return await Context.Books
+            .Where(x => x.Id == id)
+            .FirstAsync();
         }
         public async Task<Book> GetByTitle(string title)
         {
-            try
-            {
-                return await Context.Books
-                .Where(x => x.Title == title)
-                .FirstAsync();
-            }
-            catch (Exception) { throw new NotFoundException("Book with given title doesn't exist."); }
+            return await Context.Books
+            .Where(x => x.Title == title)
+            .FirstAsync();
         }
         public async Task Create(Book book)
         {
             Context.Books
                 .Add(book);
-            try {
-                await Context.SaveChangesAsync();
-            } 
-            catch (Exception) 
-            {
-                throw new AlreadyExistsException("Book with given ID already exists.");
-            }
+            await Context.SaveChangesAsync();
         }
     }
 }

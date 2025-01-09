@@ -15,42 +15,20 @@ namespace BookStore.Controllers
         {
             _ordersService = ordersService;
         }
-        
+
 
         [HttpPost("AddToOrder")]
         [Authorize]
         public async Task<ActionResult<Guid>> AddToOrder([FromBody] AddOrderItemCommand command)
         {
-            try
-            {
-                var result = await _ordersService.AddOrderItem(command);
-                return Ok(result);
-            }
-            catch (AccessViolationException ex)
-            {
-                return Unauthorized(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var result = await _ordersService.AddOrderItem(command);
+            return Ok(result);
         }
         [HttpPost("Create")]
         public async Task<ActionResult<Guid>> Create([FromQuery] int deliveryType)
         {
-            try
-            {
-                var result = await _ordersService.CreateOrder(deliveryType);
-                return Ok(result);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                return Unauthorized(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var result = await _ordersService.CreateOrder(deliveryType);
+            return Ok(result);
         }
     }
 }

@@ -20,7 +20,8 @@ namespace BookStore.Services
     {
         private readonly IBooksRepository _booksRepository;
         private readonly IBookInfoRepository _bookInfoRepository;
-        public BookSearchService(IBooksRepository booksRepository, IBookInfoRepository bookInfoRepository) {
+        public BookSearchService(IBooksRepository booksRepository, IBookInfoRepository bookInfoRepository)
+        {
             _bookInfoRepository = bookInfoRepository;
             _booksRepository = booksRepository;
         }
@@ -29,22 +30,16 @@ namespace BookStore.Services
         {
             var response = await _booksRepository.GetBooks();
             List<BookContract> result = new List<BookContract>();
-            foreach (var book in response) {
+            foreach (var book in response)
+            {
                 result.Add(BookContract.FromDomainModel(book));
             }
             return result;
         }
         public async Task AddBook(AddBookCommand command)
         {
-            try
-            {
-                var book = Book.Create(command.Title, command.Author, command.Description, command.Pages);
-                await _booksRepository.Create(book);
-            }
-            catch (AlreadyExistsException ex)
-            {
-                throw ex;
-            }
+            var book = Book.Create(command.Title, command.Author, command.Description, command.Pages);
+            await _booksRepository.Create(book);
         }
         public async Task<BookContract> GetById(Guid id)
         {
@@ -59,29 +54,15 @@ namespace BookStore.Services
 
         public async Task<BookInfoContract> GetInfoByBookId(Guid id)
         {
-            try
-            {
-                var response = await _bookInfoRepository.GetByBookId(id);
-                var result = response.OrderBy(item => item.Price).First();
-                return BookInfoContract.FromDomainModel(result);
-            }
-            catch (NotFoundException ex)
-            {
-                throw ex;
-            }
+            var response = await _bookInfoRepository.GetByBookId(id);
+            var result = response.OrderBy(item => item.Price).First();
+            return BookInfoContract.FromDomainModel(result);
         }
 
         public async Task<BookInfo> GetFullInfoByBookId(Guid id)
         {
-            try
-            {
-                var response = await _bookInfoRepository.GetByBookId(id);
-                return response.OrderBy(item => item.Price).First();
-            }
-            catch (NotFoundException ex)
-            {
-                throw ex;
-            }
+            var response = await _bookInfoRepository.GetByBookId(id);
+            return response.OrderBy(item => item.Price).First();
         }
     }
 }

@@ -36,7 +36,7 @@ namespace BookStore.Services
         {
             var login = _jwtInfo.GetName();
             var user = await _identityService.GetUserByLogin(login);
-            if(user == null)
+            if (user == null)
             {
                 throw new UnauthorizedAccessException("User with given login doesn't exist.");
             }
@@ -51,25 +51,18 @@ namespace BookStore.Services
             IdentityUser user;
             Order order;
             bool IsManager = false;
-            try
-            {
-                var userTask = _identityService.GetUserByLogin(login);
-                var orderTask = _ordersRepository.GetOrderById(command.OrderId);
-                await Task.WhenAll(userTask, orderTask);
-                user = userTask.Result;
-                order = orderTask.Result;
-            }
-            catch (InvalidOperationException)
-            {
-                throw new NotFoundException("Order with given Id doesn't exist.");
-            }
+            var userTask = _identityService.GetUserByLogin(login);
+            var orderTask = _ordersRepository.GetOrderById(command.OrderId);
+            await Task.WhenAll(userTask, orderTask);
+            user = userTask.Result;
+            order = orderTask.Result;
 
             if (!IsManager && Guid.Parse(user.Id) != order.UserId)
             {
                 throw new AccessViolationException("You aren't allowed to modify this order.");
             }
 
-            if(order.IsSent)
+            if (order.IsSent)
             {
                 throw new OrderInProgressException("Order is already in progress.");
             }

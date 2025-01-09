@@ -13,8 +13,9 @@ namespace BookStore.Controllers
     public class BookStoreController : Controller
     {
         private readonly IBookSearchService _searchService;
-        public BookStoreController(IBookSearchService searchService) { 
-            _searchService = searchService; 
+        public BookStoreController(IBookSearchService searchService)
+        {
+            _searchService = searchService;
         }
         [HttpGet("GetBooks")]
         [Authorize]
@@ -28,57 +29,30 @@ namespace BookStore.Controllers
         [Authorize(Policy = "ManagerPolicy")]
         public async Task<IActionResult> AddBook([FromBody] AddBookCommand book)
         {
-            try { 
-                await _searchService.AddBook(book);
-                return Ok();
-            }
-            catch (AlreadyExistsException ex)
-            {
-                throw ex;
-            }
+            await _searchService.AddBook(book);
+            return Ok();
         }
         [HttpGet("GetBookById")]
         [Authorize(Policy = "UserPolicy")]
         public async Task<ActionResult<BookContract>> GetBookById(Guid id)
         {
-            try
-            {
-                var result = await _searchService.GetById(id);
-                return Ok(result);
-            }
-            catch(NotFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var result = await _searchService.GetById(id);
+            return Ok(result);
         }
-        
+
         [HttpGet("GetBookByTitle")]
         [Authorize(Policy = "UserPolicy")]
         public async Task<ActionResult<BookContract>> GetBookByTitle(string title)
         {
-            try
-            {
-                var result = await _searchService.GetByTitle(title);
-                return Ok(result);
-            }
-            catch(NotFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var result = await _searchService.GetByTitle(title);
+            return Ok(result);
         }
         [HttpGet("GetBookInfo")]
         [Authorize(Policy = "UserPolicy")]
         public async Task<ActionResult<BookInfoContract>> GetBookInfo(Guid bookId)
         {
-            try
-            {
-                var result = await _searchService.GetInfoByBookId(bookId);
-                return Ok(result);
-            }
-            catch (NotFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var result = await _searchService.GetInfoByBookId(bookId);
+            return Ok(result);
         }
     }
 }
